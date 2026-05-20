@@ -21,8 +21,9 @@ console.log(`💾 데이터베이스 파일 존재: ${dbExists ? '✅ 기존 데
 const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
 
-// 테이블 초기화
+// 데이터베이스 스키마 준비 (기존 데이터는 절대 삭제되지 않음)
 function initializeDatabase() {
+  // ⚠️ CREATE TABLE IF NOT EXISTS 사용 - 기존 데이터 절대 보존!
   // 플레이어 테이블 (블랙잭 + 바카라 통계)
   db.exec(`
     CREATE TABLE IF NOT EXISTS players (
@@ -288,9 +289,22 @@ function getStats() {
   };
 }
 
-// 데이터베이스 초기화 실행
+// 데이터베이스 스키마 준비 실행 (기존 데이터 보존)
 initializeDatabase();
-console.log(`✅ 데이터베이스 초기화 완료 - 모든 테이블이 준비되었습니다`);
+
+// 데이터베이스 통계
+try {
+  const playerCount = db.prepare('SELECT COUNT(*) as count FROM players').get();
+  const gameHistoryCount = db.prepare('SELECT COUNT(*) as count FROM game_history').get();
+  const baccaratCount = db.prepare('SELECT COUNT(*) as count FROM baccarat_history').get();
+  
+  console.log(`✅ 데이터베이스 준비 완료 - 기존 데이터 보존됨`);
+  console.log(`   📊 플레이어: ${playerCount.count}명`);
+  console.log(`   🃏 블랙잭 게임: ${gameHistoryCount.count}개`);
+  console.log(`   🎰 바카라 게임: ${baccaratCount.count}개`);
+} catch (error) {
+  console.log(`✅ 데이터베이스 준비 완료`);
+}
 
 module.exports = {
   db,

@@ -390,7 +390,15 @@ async function bcStartNewGame() {
 
     // 자연 판정 (Natural)
     if (data.gameOver) {
+      // Natural 표시
+      const statusDiv = document.getElementById('bcGameStatus');
+      statusDiv.textContent = '✨ 내츄럴!';
+      statusDiv.className = 'game-status natural';
+      await new Promise(resolve => setTimeout(resolve, 2000));  // 2초 표시
       bcHandleGameResult(data.result, data.payout);
+    } else {
+      // 드로우 가능 (게임이 계속됨)
+      document.getElementById('bcActionPanel').style.display = 'flex';
     }
   } catch (error) {
     console.error('바카라 시작 오류:', error);
@@ -398,7 +406,7 @@ async function bcStartNewGame() {
   }
 }
 
-// 바카라 카드 표시
+// 바카라 카드 표시 (플레이어 2개, 뱅커 2개 천천히 표시)
 async function bcDisplayCards(playerCards, bankerCards) {
   const playerCardsDiv = document.getElementById('playerCards-bc');
   const bankerCardsDiv = document.getElementById('bankerCards');
@@ -406,25 +414,53 @@ async function bcDisplayCards(playerCards, bankerCards) {
   playerCardsDiv.innerHTML = '';
   bankerCardsDiv.innerHTML = '';
 
-  // 카드를 교대로 하나씩 표시: Pl1, B1, Pl2, B2
-  const maxLength = Math.max(playerCards.length, bankerCards.length);
+  // 플레이어 첫번째 카드 (600ms 딜레이)
+  if (playerCards.length > 0) {
+    const cardHTML = createCardElement(playerCards[0]);
+    playerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 600));
+  }
 
-  for (let i = 0; i < maxLength; i++) {
-    // 플레이어 카드 표시
-    if (i < playerCards.length) {
-      const cardHTML = createCardElement(playerCards[i]);
-      playerCardsDiv.innerHTML += cardHTML;
-      playCardSound();
-      await new Promise(resolve => setTimeout(resolve, 300));  // 300ms 딜레이
-    }
+  // 뱅커 첫번째 카드 (600ms 딜레이)
+  if (bankerCards.length > 0) {
+    const cardHTML = createCardElement(bankerCards[0]);
+    bankerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 600));
+  }
 
-    // 뱅커 카드 표시
-    if (i < bankerCards.length) {
-      const cardHTML = createCardElement(bankerCards[i]);
-      bankerCardsDiv.innerHTML += cardHTML;
-      playCardSound();
-      await new Promise(resolve => setTimeout(resolve, 300));  // 300ms 딜레이
-    }
+  // 플레이어 두번째 카드 (600ms 딜레이)
+  if (playerCards.length > 1) {
+    const cardHTML = createCardElement(playerCards[1]);
+    playerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 600));
+  }
+
+  // 뱅커 두번째 카드 (600ms 딜레이)
+  if (bankerCards.length > 1) {
+    const cardHTML = createCardElement(bankerCards[1]);
+    bankerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 600));
+  }
+
+  // 3번째 카드 표시 (드로우 후)
+  if (playerCards.length > 2) {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    const cardHTML = createCardElement(playerCards[2]);
+    playerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 600));
+  }
+
+  if (bankerCards.length > 2) {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    const cardHTML = createCardElement(bankerCards[2]);
+    bankerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 600));
   }
 }
 

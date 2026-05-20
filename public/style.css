@@ -409,6 +409,16 @@ button {
   border-color: var(--primary-color);
 }
 
+.game-status.natural {
+  background: linear-gradient(135deg, rgba(147, 112, 219, 0.2) 0%, rgba(75, 0, 130, 0.15) 100%);
+  color: #9370DB;
+  border-color: #9370DB;
+  box-shadow: 0 4px 12px rgba(147, 112, 219, 0.3);
+  font-size: 1.3em;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
 /* 베팅 패널 */
 .betting-panel {
   background: linear-gradient(135deg, rgba(26, 71, 42, 0.8) 0%, rgba(15, 40, 24, 0.8) 100%);

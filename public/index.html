@@ -20,7 +20,7 @@
         <input 
           type="text" 
           id="playerName" 
-          placeholder="게임 닉네임 (2-20자, 한글/영문/숫자)"
+          placeholder="게임 닉네임 (2-20자, 한글/영문/숫자/_)"
           maxlength="20"
           autofocus
         >
@@ -81,11 +81,25 @@
   </div>
 
   <script>
+    // 전역 변수 선언
+    let currentPlayer = null;
+
     // localStorage에서 이전 이름 불러오기
     window.addEventListener('DOMContentLoaded', () => {
-      const savedName = localStorage.getItem('playerName');
-      if (savedName) {
-        document.getElementById('playerName').value = savedName;
+      const savedPlayerData = localStorage.getItem('playerData');
+      if (savedPlayerData) {
+        try {
+          const playerData = JSON.parse(savedPlayerData);
+          currentPlayer = playerData;
+          showGameSelection(playerData);
+        } catch (error) {
+          console.error('저장된 데이터 로드 오류:', error);
+        }
+      } else {
+        const savedName = localStorage.getItem('playerName');
+        if (savedName) {
+          document.getElementById('playerName').value = savedName;
+        }
       }
     });
 
@@ -113,8 +127,8 @@
         return;
       }
 
-      if (!/^[가-힣a-zA-Z0-9]+$/.test(name)) {
-        errorDiv.textContent = '한글, 영문, 숫자만 사용 가능합니다';
+      if (!/^[가-힣a-zA-Z0-9_]+$/.test(name)) {
+        errorDiv.textContent = '한글, 영문, 숫자, 언더스코어만 사용 가능합니다';
         return;
       }
 
@@ -149,21 +163,66 @@
     function showGameSelection(playerData) {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('gameSelectionScreen').style.display = 'block';
-      
-      document.getElementById('selectedPlayerName').textContent = playerData.name;
-      document.getElementById('gameSelectionChips').textContent = playerData.chips;
-      document.getElementById('gameSelectionBalance').textContent = `$${(playerData.balance / 100).toFixed(2)}`;
+      currentPlayer = playerData;
+      updateGameSelectionDisplay();
     }
 
-    function selectGame(game) {
-      // 모든 게임이 통합 페이지로 이동
+    function updateGameSelectionDisplay() {
+      document.getElementById('selectedPlayerName').textContent = currentPlayer.name;
+      document.getElementById('gameSelectionChips').textContent = currentPlayer.chips;
+      document.getElementById('gameSelectionBalance').textContent = `$${(currentPlayer.balance / 100).toFixed(2)}`;
+    }
+
+    async function refreshPlayerData() {
+      try {
+        const response = await fetch(`/api/player/${currentPlayer.name}`);
+        const data = await response.json();
+        if (data.success) {
+          currentPlayer = data.player;
+          updateGameSelectionDisplay();
+        }
+      } catch (error) {
+        console.error('플레이어 정보 새로고침 오류:', error);
+      }
+    }
+
+    async function selectGame(game) {
+      // 최신 플레이어 정보 저장 후 게임 페이지로 이동
+      try {
+        const response = await fetch(`/api/player/${currentPlayer.name}`);
+        const data = await response.json();
+        if (data.success) {
+          localStorage.setItem('playerData', JSON.stringify(data.player));
+        }
+      } catch (error) {
+        console.error('플레이어 정보 조회 오류:', error);
+      }
       window.location.href = '/games.html';
     }
 
     function changePlayer() {
+      localStorage.removeItem('playerName');
       localStorage.removeItem('playerData');
-      location.reload();
+      document.getElementById('loginScreen').style.display = 'block';
+      document.getElementById('gameSelectionScreen').style.display = 'none';
+      document.getElementById('playerName').value = '';
+      document.getElementById('error-message').textContent = '';
+      currentPlayer = null;
     }
+
+    // 게임 선택 화면이 보일 때 5초마다 칩 새로고침 (실시간 반영)
+    setInterval(() => {
+      if (currentPlayer && document.getElementById('gameSelectionScreen').style.display === 'block') {
+        refreshPlayerData();
+      }
+    }, 5000);
+
+    // 페이지 포커스 시 칩 즉시 새로고침
+    window.addEventListener('focus', () => {
+      if (currentPlayer && document.getElementById('gameSelectionScreen').style.display === 'block') {
+        refreshPlayerData();
+      }
+    });
   </script>
 </body>
 </html>

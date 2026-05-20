@@ -156,17 +156,17 @@ router.post('/draw', (req, res) => {
     if (finalPlayerValue > finalBankerValue) {
       result = 'player';
       if (gameState.betType === 'player') {
-        payout = gameState.betAmount * 2;
+        payout = gameState.betAmount * 2;  // 플레이어: 2배 배당
       }
     } else if (finalBankerValue > finalPlayerValue) {
       result = 'banker';
       if (gameState.betType === 'banker') {
-        payout = Math.floor(gameState.betAmount * 1.95);  // 5% 커미션
+        payout = gameState.betAmount * 1.9;  // 뱅커: 1.9배 배당
       }
     } else {
       result = 'tie';
       if (gameState.betType === 'tie') {
-        payout = gameState.betAmount * 9;  // 타이: 8배 배당
+        payout = gameState.betAmount * 3;  // 타이: 3배 배당
       }
     }
 

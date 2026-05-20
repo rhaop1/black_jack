@@ -461,29 +461,34 @@ async function bcDisplayCards(playerCards, bankerCards) {
     playCardSound();
     await new Promise(resolve => setTimeout(resolve, 600));
   }
-
-  // 3번째 카드 표시 (드로우 후)
-  if (playerCards.length > 2) {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    const cardHTML = createCardElement(playerCards[2]);
-    playerCardsDiv.innerHTML += cardHTML;
-    playCardSound();
-    await new Promise(resolve => setTimeout(resolve, 600));
-  }
-
-  if (bankerCards.length > 2) {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    const cardHTML = createCardElement(bankerCards[2]);
-    bankerCardsDiv.innerHTML += cardHTML;
-    playCardSound();
-    await new Promise(resolve => setTimeout(resolve, 600));
-  }
 }
 
 // 바카라 점수 업데이트
 function bcUpdateScores(playerValue, bankerValue) {
   document.getElementById('playerScore-bc').textContent = playerValue;
   document.getElementById('bankerScore').textContent = bankerValue;
+}
+
+// 바카라 3번째 카드만 표시 (드로우 후)
+async function bcDisplayThirdCards(playerCards, bankerCards) {
+  const playerCardsDiv = document.getElementById('playerCards-bc');
+  const bankerCardsDiv = document.getElementById('bankerCards');
+
+  // 플레이어 3번째 카드 표시
+  if (playerCards.length > 2) {
+    const cardHTML = createCardElement(playerCards[2]);
+    playerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 600));
+  }
+
+  // 뱅커 3번째 카드 표시
+  if (bankerCards.length > 2) {
+    const cardHTML = createCardElement(bankerCards[2]);
+    bankerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 600));
+  }
 }
 
 // 바카라 카드 드로우
@@ -504,7 +509,8 @@ async function bcDrawCards() {
       return;
     }
 
-    await bcDisplayCards(data.playerHand, data.bankerHand);
+    // 3번째 카드만 표시
+    await bcDisplayThirdCards(data.playerHand, data.bankerHand);
     bcUpdateScores(data.playerValue, data.bankerValue);
     bcHandleGameResult(data.result, data.payout);
   } catch (error) {

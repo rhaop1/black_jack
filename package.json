@@ -1,7 +1,7 @@
 {
   "name": "blackjack-casino",
-  "version": "1.0.0",
-  "description": "Full-stack blackjack game application with admin system",
+  "version": "2.0.1",
+  "description": "MILK CASINO - Full-stack blackjack & baccarat casino with luxury design",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

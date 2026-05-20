@@ -11,7 +11,7 @@
     <!-- 플레이어 로그인 화면 (처음) -->
     <div id="loginScreen" class="login-container" style="display: block;">
       <div class="logo">
-        <h1>🎰 CASINO</h1>
+        <h1>◆ CASINO ◆</h1>
         <p>블랙잭 & 바카라 게임</p>
       </div>
       <div class="login-form">
@@ -23,7 +23,7 @@
           maxlength="20"
           autofocus
         >
-        <button onclick="startGame()">🎮 게임 입장</button>
+        <button onclick="startGame()">▶ 게임 입장</button>
         <div id="error-message" class="error-message"></div>
       </div>
       <div class="admin-link">
@@ -34,7 +34,7 @@
     <!-- 게임 선택 화면 -->
     <div id="gameSelectionScreen" class="game-selection-container" style="display: none;">
       <div class="game-selection-header">
-        <h1>🎰 게임 선택</h1>
+        <h1>◆ 게임 선택 ◆</h1>
         <div class="player-info-small">
           <span id="selectedPlayerName"></span> 
           <button onclick="changePlayer()" class="btn-logout">계정 변경</button>
@@ -45,24 +45,24 @@
       <div class="game-selection-grid">
         <!-- 블랙잭 -->
         <div class="game-card" onclick="selectGame('blackjack')">
-          <div class="game-icon">♠️</div>
+          <div class="game-icon">♣</div>
           <h2>블랙잭</h2>
           <p>딜러와의 21점 경쟁!</p>
           <div class="game-stats">
             <span>Hit, Stand, Double</span>
           </div>
-          <button class="btn-play">플레이</button>
+          <button class="btn-play">▶ 플레이</button>
         </div>
 
         <!-- 바카라 -->
         <div class="game-card" onclick="selectGame('baccarat')">
-          <div class="game-icon">♦️</div>
+          <div class="game-icon">◆</div>
           <h2>바카라</h2>
           <p>플레이어/뱅커에 베팅하세요!</p>
           <div class="game-stats">
             <span>Player, Banker, Tie</span>
           </div>
-          <button class="btn-play">플레이</button>
+          <button class="btn-play">▶ 플레이</button>
         </div>
       </div>
 

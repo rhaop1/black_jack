@@ -589,8 +589,18 @@ function closeStats() {
   document.getElementById('statsModal').style.display = 'none';
 }
 
-// 홈으로 이동
-function goHome() {
-  localStorage.removeItem('playerData');
+// 홈으로 이동 (최신 데이터와 함께)
+async function goHome() {
+  try {
+    // 최신 플레이어 정보 조회
+    const response = await fetch(`/api/player/${currentPlayer.name}`);
+    const data = await response.json();
+    if (data.success) {
+      // 최신 데이터 저장
+      localStorage.setItem('playerData', JSON.stringify(data.player));
+    }
+  } catch (error) {
+    console.error('플레이어 정보 조회 오류:', error);
+  }
   window.location.href = '/';
 }

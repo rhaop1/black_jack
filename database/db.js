@@ -9,7 +9,13 @@ const dbPath = process.env.DB_PATH || path.join(__dirname, '../database/blackjac
 const dbDir = path.dirname(dbPath);
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
+  console.log(`📁 데이터베이스 디렉토리 생성: ${dbDir}`);
 }
+
+// 데이터베이스 파일 존재 여부 확인
+const dbExists = fs.existsSync(dbPath);
+console.log(`💾 데이터베이스 경로: ${dbPath}`);
+console.log(`💾 데이터베이스 파일 존재: ${dbExists ? '✅ 기존 데이터 유지' : '🆕 새로 생성'}`);
 
 // 데이터베이스 연결
 const db = new Database(dbPath);
@@ -284,6 +290,7 @@ function getStats() {
 
 // 데이터베이스 초기화 실행
 initializeDatabase();
+console.log(`✅ 데이터베이스 초기화 완료 - 모든 테이블이 준비되었습니다`);
 
 module.exports = {
   db,

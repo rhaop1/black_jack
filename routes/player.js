@@ -13,13 +13,13 @@ router.post('/login', (req, res) => {
 
   const trimmedName = name.trim();
 
-  // 이름 길이 및 문자 검증 (2-20자, 한글/영문/숫자만)
+  // 이름 길이 및 문자 검증 (2-20자, 한글/영문/숫자/언더스코어)
   if (trimmedName.length < 2 || trimmedName.length > 20) {
     return res.status(400).json({ error: '이름은 2~20자여야 합니다' });
   }
 
-  if (!/^[가-힣a-zA-Z0-9]+$/.test(trimmedName)) {
-    return res.status(400).json({ error: '한글, 영문, 숫자만 사용 가능합니다' });
+  if (!/^[가-힣a-zA-Z0-9_]+$/.test(trimmedName)) {
+    return res.status(400).json({ error: '한글, 영문, 숫자, 언더스코어만 사용 가능합니다' });
   }
 
   try {

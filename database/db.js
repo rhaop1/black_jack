@@ -270,7 +270,8 @@ function getStats() {
   const todayPlayers = db.prepare(`
     SELECT COUNT(*) as count FROM players WHERE DATE(last_played) = DATE('now')
   `).get().count;
-  const totalGames = db.prepare('SELECT SUM(total_games) as count FROM players').get().count || 0;
+  // 블랙잭 + 바카라 전체 게임 수
+  const totalGames = db.prepare('SELECT SUM(bj_total_games + bc_total_games) as count FROM players').get().count || 0;
   const totalChips = db.prepare('SELECT SUM(chips) as count FROM players').get().count || 0;
 
   return {

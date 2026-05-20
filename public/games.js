@@ -380,6 +380,9 @@ async function bcStartNewGame() {
     bcGameInProgress = true;
     currentPlayer.chips = data.chips;
     updatePlayerDisplay();
+    
+    // Natural 표시 초기화
+    document.getElementById('naturalDisplay').style.display = 'none';
 
     // UI 업데이트
     await bcDisplayCards(data.playerHand, data.bankerHand);
@@ -390,11 +393,24 @@ async function bcStartNewGame() {
 
     // 자연 판정 (Natural)
     if (data.gameOver) {
-      // Natural 표시
-      const statusDiv = document.getElementById('bcGameStatus');
-      statusDiv.textContent = '✨ 내츄럴!';
-      statusDiv.className = 'game-status natural';
+      // Natural을 사이드바에 표시
+      const naturalDisplay = document.getElementById('naturalDisplay');
+      const naturalInfo = document.getElementById('naturalInfo');
+      
+      let infoText = '';
+      if (data.result === 'player') {
+        infoText = 'PLAYER WINS';
+      } else if (data.result === 'banker') {
+        infoText = 'BANKER WINS';
+      } else if (data.result === 'tie') {
+        infoText = 'TIE';
+      }
+      
+      naturalInfo.textContent = infoText;
+      naturalDisplay.style.display = 'block';
+      
       await new Promise(resolve => setTimeout(resolve, 2000));  // 2초 표시
+      naturalDisplay.style.display = 'none';
       bcHandleGameResult(data.result, data.payout);
     } else {
       // 드로우 가능 (게임이 계속됨)
@@ -499,6 +515,9 @@ async function bcDrawCards() {
 // 바카라 게임 결과 처리
 async function bcHandleGameResult(result, payout) {
   bcGameInProgress = false;
+  
+  // Natural 표시 숨기기
+  document.getElementById('naturalDisplay').style.display = 'none';
 
   const statusDiv = document.getElementById('bcGameStatus');
   let statusText = '';

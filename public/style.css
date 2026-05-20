@@ -1003,3 +1003,73 @@ button {
     font-size: 1.5em;
   }
 }
+
+/* ========== 게임 탭 스타일 ========== */
+.game-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 10px;
+  justify-content: center;
+}
+
+.game-tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--light-color);
+  padding: 10px 20px;
+  font-size: 1.1em;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.game-tab-btn:hover {
+  color: var(--primary-color);
+}
+
+.game-tab-btn.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  background: rgba(212, 175, 55, 0.1);
+}
+
+/* 게임 콘텐츠 전환 */
+.game-content {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.game-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 통계 섹션 */
+.stats-section {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.stats-section:last-child {
+  border-bottom: none;
+}
+
+.stats-section h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-size: 1.3em;
+}

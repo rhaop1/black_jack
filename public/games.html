@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>카지노 게임 - 블랙잭 & 바카라</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container game-container">
+    <header class="game-header">
+      <div class="player-info">
+        <span>플레이어: <strong id="playerNameDisplay"></strong></span>
+        <span>칩: <strong id="chipsDisplay">0</strong></span>
+        <span>잔액: <strong id="balanceDisplay">$0.00</strong></span>
+      </div>
+      <div class="header-actions">
+        <button onclick="goHome()" class="btn-home">🏠 게임선택</button>
+        <button onclick="showStats()" class="btn-stats">📊 통계</button>
+      </div>
+    </header>
+
+    <!-- 게임 탭 선택 -->
+    <div class="game-tabs">
+      <button class="game-tab-btn active" onclick="switchGame('blackjack')" id="bjTab">♠️ 블랙잭</button>
+      <button class="game-tab-btn" onclick="switchGame('baccarat')" id="bcTab">♦️ 바카라</button>
+    </div>
+
+    <main class="game-main">
+      <!-- ========== 블랙잭 게임 ========== -->
+      <div id="blackjackGame" class="game-content active">
+        <!-- 딜러 영역 -->
+        <div class="dealer-area">
+          <h3>딜러</h3>
+          <div class="cards-container" id="dealerCards"></div>
+          <div class="score">딜러 점수: <span id="dealerScore">0</span></div>
+        </div>
+
+        <!-- 플레이어 영역 -->
+        <div class="player-area">
+          <h3>플레이어</h3>
+          <div class="cards-container" id="playerCards"></div>
+          <div class="score">플레이어 점수: <span id="playerScore">0</span></div>
+        </div>
+
+        <!-- 게임 상태 -->
+        <div id="bjGameStatus" class="game-status"></div>
+
+        <!-- 베팅 패널 -->
+        <div id="bjBettingPanel" class="betting-panel">
+          <h3>베팅</h3>
+          <div class="bet-buttons">
+            <button onclick="bjPlaceBet(1)" class="bet-btn">1칩</button>
+            <button onclick="bjPlaceBet(5)" class="bet-btn">5칩</button>
+            <button onclick="bjPlaceBet(25)" class="bet-btn">25칩</button>
+            <button onclick="bjPlaceBet(100)" class="bet-btn">100칩</button>
+          </div>
+          <div class="current-bet">현재 베팅: <span id="bjCurrentBet">0</span>칩</div>
+          <button onclick="bjStartNewGame()" class="btn-primary btn-large">게임 시작</button>
+        </div>
+
+        <!-- 액션 버튼 -->
+        <div id="bjActionPanel" class="action-panel" style="display: none;">
+          <button onclick="bjHit()" class="btn-action">Hit (카드 받기)</button>
+          <button onclick="bjStand()" class="btn-action">Stand (멈추기)</button>
+          <button onclick="bjDoubleDown()" class="btn-action">Double (더블다운)</button>
+        </div>
+      </div>
+
+      <!-- ========== 바카라 게임 ========== -->
+      <div id="baccaratGame" class="game-content">
+        <!-- 플레이어 영역 -->
+        <div class="dealer-area">
+          <h3>플레이어 (Player)</h3>
+          <div class="cards-container" id="playerCards-bc"></div>
+          <div class="score">점수: <span id="playerScore-bc">0</span></div>
+        </div>
+
+        <!-- 뱅커 영역 -->
+        <div class="player-area">
+          <h3>뱅커 (Banker)</h3>
+          <div class="cards-container" id="bankerCards"></div>
+          <div class="score">점수: <span id="bankerScore">0</span></div>
+        </div>
+
+        <!-- 게임 상태 -->
+        <div id="bcGameStatus" class="game-status"></div>
+
+        <!-- 베팅 패널 -->
+        <div id="bcBettingPanel" class="betting-panel">
+          <h3>베팅 선택</h3>
+          <div class="baccarat-bet-buttons">
+            <button onclick="bcSelectBet('player')" class="bet-type-btn player-bet">
+              <div class="bet-label">플레이어</div>
+              <div class="bet-payout">배당: 2배</div>
+            </button>
+            <button onclick="bcSelectBet('banker')" class="bet-type-btn banker-bet">
+              <div class="bet-label">뱅커</div>
+              <div class="bet-payout">배당: 1.9배</div>
+            </button>
+            <button onclick="bcSelectBet('tie')" class="bet-type-btn tie-bet">
+              <div class="bet-label">타이</div>
+              <div class="bet-payout">배당: 3배</div>
+            </button>
+          </div>
+          
+          <div class="bet-buttons" id="bcChipButtonsContainer" style="display: none;">
+            <button onclick="bcPlaceBet(1)" class="bet-btn">1칩</button>
+            <button onclick="bcPlaceBet(5)" class="bet-btn">5칩</button>
+            <button onclick="bcPlaceBet(25)" class="bet-btn">25칩</button>
+            <button onclick="bcPlaceBet(100)" class="bet-btn">100칩</button>
+          </div>
+          <div class="current-bet">현재 베팅: <span id="bcCurrentBet">0</span>칩 | 타입: <span id="bcCurrentBetType">-</span></div>
+          <button onclick="bcStartNewGame()" class="btn-primary btn-large">게임 시작</button>
+        </div>
+
+        <!-- 액션 버튼 -->
+        <div id="bcActionPanel" class="action-panel" style="display: none;">
+          <button onclick="bcDrawCards()" class="btn-action">카드 드로우</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- 사이드바: 게임 히스토리 -->
+    <aside class="sidebar">
+      <div class="history-section">
+        <h3>최근 게임</h3>
+        <div id="gameHistory" class="history-list"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 통계 모달 -->
+  <div id="statsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeStats()">&times;</span>
+      <h2>내 통계</h2>
+      
+      <!-- 블랙잭 통계 -->
+      <div class="stats-section">
+        <h3>♠️ 블랙잭</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">총 게임</div>
+            <div class="stat-value" id="statBjTotalGames">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">승리</div>
+            <div class="stat-value" id="statBjWins">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">패배</div>
+            <div class="stat-value" id="statBjLosses">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">무승부</div>
+            <div class="stat-value" id="statBjPushes">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">최대 승리</div>
+            <div class="stat-value" id="statBjBiggestWin">$0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 바카라 통계 -->
+      <div class="stats-section">
+        <h3>♦️ 바카라</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">총 게임</div>
+            <div class="stat-value" id="statBcTotalGames">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">플레이어 승</div>
+            <div class="stat-value" id="statBcPlayerWins">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">뱅커 승</div>
+            <div class="stat-value" id="statBcBankerWins">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">타이</div>
+            <div class="stat-value" id="statBcTies">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">최대 승리</div>
+            <div class="stat-value" id="statBcBiggestWin">$0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="games.js"></script>
+</body>
+</html>

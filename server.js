@@ -1,6 +1,12 @@
 // 환경변수 로드
 require('dotenv').config();
 
+// ===== MILK CASINO v2.0.1 =====
+// 럭셔 디자인 + 바카라 + 블랙잭 통합
+// 배포 트리거: 2026-05-20
+// GitHub: rhaop1/black_jack
+// =================================
+
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');

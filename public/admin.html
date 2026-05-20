@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 대시보드</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 로그인 화면 -->
+  <div id="loginScreen" class="admin-login-screen">
+    <div class="login-container">
+      <div class="logo">
+        <h1>🔐 관리자 로그인</h1>
+      </div>
+      <div class="login-form">
+        <input 
+          type="text" 
+          id="adminId" 
+          placeholder="관리자 ID"
+          autofocus
+        >
+        <input 
+          type="password" 
+          id="adminPassword" 
+          placeholder="관리자 비밀번호"
+        >
+        <button onclick="adminLogin()">로그인</button>
+        <div id="loginError" class="error-message"></div>
+        <a href="/" style="margin-top: 20px; display: block; text-align: center;">← 돌아가기</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 관리자 대시보드 -->
+  <div id="adminDashboard" class="container admin-container" style="display: none;">
+    <header class="admin-header">
+      <h1>🎰 관리자 대시보드</h1>
+      <div class="admin-actions">
+        <button onclick="refreshData()" class="btn-secondary">🔄 새로고침</button>
+        <button onclick="adminLogout()" class="btn-danger">로그아웃</button>
+        <a href="/" class="btn-secondary">← 홈</a>
+      </div>
+    </header>
+
+    <!-- 통계 카드 -->
+    <section class="stats-section">
+      <div class="stat-card">
+        <div class="stat-label">총 플레이어</div>
+        <div class="stat-value" id="totalPlayers">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">오늘 접속</div>
+        <div class="stat-value" id="todayPlayers">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">총 게임</div>
+        <div class="stat-value" id="totalGames">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">발행 칩</div>
+        <div class="stat-value" id="totalChips">0</div>
+      </div>
+    </section>
+
+    <!-- 검색 영역 -->
+    <div class="search-section">
+      <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="플레이어 검색..."
+        onkeyup="filterPlayers()"
+      >
+    </div>
+
+    <!-- 플레이어 테이블 -->
+    <section class="players-section">
+      <h2>플레이어 목록</h2>
+      <div class="table-wrapper">
+        <table class="players-table">
+          <thead>
+            <tr>
+              <th>플레이어</th>
+              <th>칩</th>
+              <th>게임</th>
+              <th>승리</th>
+              <th>패배</th>
+              <th>무승부</th>
+              <th>승률</th>
+              <th>최대 승리</th>
+              <th>마지막 접속</th>
+              <th>액션</th>
+            </tr>
+          </thead>
+          <tbody id="playersTableBody">
+            <tr><td colspan="10" style="text-align: center;">로딩 중...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 칩 지급 로그 -->
+    <section class="logs-section">
+      <h2>칩 지급 내역</h2>
+      <div class="table-wrapper">
+        <table class="logs-table">
+          <thead>
+            <tr>
+              <th>날짜/시간</th>
+              <th>플레이어</th>
+              <th>액션</th>
+              <th>수량</th>
+              <th>변경 전</th>
+              <th>변경 후</th>
+              <th>메모</th>
+            </tr>
+          </thead>
+          <tbody id="logsTableBody">
+            <tr><td colspan="7" style="text-align: center;">로딩 중...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- 칩 수정 모달 -->
+  <div id="chipModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeChipModal()">&times;</span>
+      <h2 id="chipModalTitle">칩 수정</h2>
+      <form onsubmit="submitChipChange(event)">
+        <div class="form-group">
+          <label>플레이어</label>
+          <input type="text" id="chipPlayerName" readonly disabled>
+        </div>
+        <div class="form-group">
+          <label>액션</label>
+          <select id="chipAction">
+            <option value="add">지급 (+)</option>
+            <option value="subtract">차감 (-)</option>
+            <option value="set">설정 (=)</option>
+            <option value="reset">초기화 (0)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>수량</label>
+          <input type="number" id="chipAmount" min="0" required>
+        </div>
+        <div class="form-group">
+          <label>메모 (선택)</label>
+          <input type="text" id="chipNote" placeholder="관리자 메모...">
+        </div>
+        <button type="submit" class="btn-primary">수정</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let allPlayers = [];
+
+    // 초기화
+    window.addEventListener('DOMContentLoaded', async () => {
+      const isAuthenticated = await checkAdminStatus();
+      if (isAuthenticated) {
+        showAdminDashboard();
+        refreshData();
+      }
+    });
+
+    // 관리자 상태 확인
+    async function checkAdminStatus() {
+      try {
+        const response = await fetch('/api/admin/status');
+        const data = await response.json();
+        return data.authenticated;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    // 관리자 로그인
+    async function adminLogin() {
+      const id = document.getElementById('adminId').value;
+      const password = document.getElementById('adminPassword').value;
+      const errorDiv = document.getElementById('loginError');
+
+      errorDiv.textContent = '';
+
+      if (!id || !password) {
+        errorDiv.textContent = 'ID와 비밀번호를 입력하세요';
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          errorDiv.textContent = data.error || '로그인 실패';
+          return;
+        }
+
+        showAdminDashboard();
+        refreshData();
+      } catch (error) {
+        console.error('로그인 오류:', error);
+        errorDiv.textContent = '서버 오류가 발생했습니다';
+      }
+    }
+
+    // 관리자 로그아웃
+    async function adminLogout() {
+      if (!confirm('로그아웃하시겠습니까?')) return;
+
+      try {
+        await fetch('/api/admin/logout', { method: 'POST' });
+        location.href = '/';
+      } catch (error) {
+        console.error('로그아웃 오류:', error);
+      }
+    }
+
+    // 대시보드 표시
+    function showAdminDashboard() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminDashboard').style.display = 'block';
+    }
+
+    // 데이터 새로고침
+    async function refreshData() {
+      try {
+        const [playersRes, statsRes, logsRes] = await Promise.all([
+          fetch('/api/admin/players'),
+          fetch('/api/admin/stats'),
+          fetch('/api/admin/logs')
+        ]);
+
+        const playersData = await playersRes.json();
+        const statsData = await statsRes.json();
+        const logsData = await logsRes.json();
+
+        if (playersData.success) {
+          allPlayers = playersData.players;
+          renderPlayersTable(allPlayers);
+        }
+
+        if (statsData.success) {
+          const stats = statsData.stats;
+          document.getElementById('totalPlayers').textContent = stats.total_players;
+          document.getElementById('todayPlayers').textContent = stats.today_players;
+          document.getElementById('totalGames').textContent = stats.total_games;
+          document.getElementById('totalChips').textContent = stats.total_chips;
+        }
+
+        if (logsData.success) {
+          renderLogsTable(logsData.logs);
+        }
+      } catch (error) {
+        console.error('데이터 새로고침 오류:', error);
+      }
+    }
+
+    // 플레이어 테이블 렌더링
+    function renderPlayersTable(players) {
+      const tbody = document.getElementById('playersTableBody');
+      
+      if (players.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">플레이어가 없습니다</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = players.map(p => `
+        <tr>
+          <td>${escapeHtml(p.name)}</td>
+          <td>${p.chips}</td>
+          <td>${p.total_games}</td>
+          <td>${p.total_wins}</td>
+          <td>${p.total_losses}</td>
+          <td>${p.total_pushes}</td>
+          <td>${p.win_rate}%</td>
+          <td>$${(p.biggest_win / 100).toFixed(2)}</td>
+          <td>${new Date(p.last_played).toLocaleString('ko-KR')}</td>
+          <td>
+            <button onclick="openChipModal('${escapeHtml(p.name)}')" class="btn-small">칩</button>
+            <button onclick="deletePlayer('${escapeHtml(p.name)}')" class="btn-small btn-danger">삭제</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // 로그 테이블 렌더링
+    function renderLogsTable(logs) {
+      const tbody = document.getElementById('logsTableBody');
+      
+      if (logs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">로그가 없습니다</td></tr>';
+        return;
+      }
+
+      const actionText = {
+        'add': '지급',
+        'subtract': '차감',
+        'set': '설정',
+        'reset': '초기화'
+      };
+
+      tbody.innerHTML = logs.map(log => `
+        <tr>
+          <td>${new Date(log.created_at).toLocaleString('ko-KR')}</td>
+          <td>${escapeHtml(log.player_name)}</td>
+          <td>${actionText[log.action] || log.action}</td>
+          <td>${log.amount}</td>
+          <td>${log.before_chips}</td>
+          <td>${log.after_chips}</td>
+          <td>${log.admin_note || '-'}</td>
+        </tr>
+      `).join('');
+    }
+
+    // 플레이어 검색
+    function filterPlayers() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allPlayers.filter(p => 
+        p.name.toLowerCase().includes(searchTerm)
+      );
+      renderPlayersTable(filtered);
+    }
+
+    // 칩 수정 모달 열기
+    function openChipModal(playerName) {
+      document.getElementById('chipPlayerName').value = playerName;
+      document.getElementById('chipAmount').value = '';
+      document.getElementById('chipNote').value = '';
+      document.getElementById('chipAction').value = 'add';
+      document.getElementById('chipModal').style.display = 'block';
+    }
+
+    // 칩 수정 모달 닫기
+    function closeChipModal() {
+      document.getElementById('chipModal').style.display = 'none';
+    }
+
+    // 칩 수정 제출
+    async function submitChipChange(event) {
+      event.preventDefault();
+
+      const playerName = document.getElementById('chipPlayerName').value;
+      const action = document.getElementById('chipAction').value;
+      const amount = parseInt(document.getElementById('chipAmount').value);
+      const note = document.getElementById('chipNote').value;
+
+      if (!amount || amount < 0) {
+        alert('유효한 수량을 입력하세요');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/admin/chips', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ playerName, action, amount, note })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.error || '오류가 발생했습니다');
+          return;
+        }
+
+        alert('칩이 수정되었습니다');
+        closeChipModal();
+        refreshData();
+      } catch (error) {
+        console.error('칩 수정 오류:', error);
+        alert('서버 오류가 발생했습니다');
+      }
+    }
+
+    // 플레이어 삭제
+    async function deletePlayer(playerName) {
+      if (!confirm(`"${playerName}" 플레이어를 삭제하시겠습니까?`)) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/admin/player/${playerName}`, {
+          method: 'DELETE'
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.error || '오류가 발생했습니다');
+          return;
+        }
+
+        alert('플레이어가 삭제되었습니다');
+        refreshData();
+      } catch (error) {
+        console.error('플레이어 삭제 오류:', error);
+        alert('서버 오류가 발생했습니다');
+      }
+    }
+
+    // XSS 방지
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    // 모달 외부 클릭 시 닫기
+    window.addEventListener('click', (e) => {
+      const modal = document.getElementById('chipModal');
+      if (e.target === modal) {
+        closeChipModal();
+      }
+    });
+  </script>
+</body>
+</html>

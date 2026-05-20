@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>블랙잭 - 카지노 게임</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="login-container">
+      <div class="logo">
+        <h1>🎰 BLACKJACK</h1>
+        <p>클래식 카지노 게임</p>
+      </div>
+      <div class="login-form">
+        <p class="guide-text">처음이신가요? 이름을 입력하면 자동으로 계정이 만들어집니다.</p>
+        <input 
+          type="text" 
+          id="playerName" 
+          placeholder="게임 닉네임 (2-20자, 한글/영문/숫자)"
+          maxlength="20"
+          autofocus
+        >
+        <button onclick="startGame()">🎮 게임 입장</button>
+        <div id="error-message" class="error-message"></div>
+      </div>
+      <div class="admin-link">
+        <a href="/admin.html">관리자 페이지</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // localStorage에서 이전 이름 불러오기
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedName = localStorage.getItem('playerName');
+      if (savedName) {
+        document.getElementById('playerName').value = savedName;
+      }
+    });
+
+    // Enter 키로 게임 시작
+    document.getElementById('playerName').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        startGame();
+      }
+    });
+
+    async function startGame() {
+      const name = document.getElementById('playerName').value.trim();
+      const errorDiv = document.getElementById('error-message');
+
+      errorDiv.textContent = '';
+
+      // 입력 검증
+      if (!name) {
+        errorDiv.textContent = '이름을 입력하세요';
+        return;
+      }
+
+      if (name.length < 2 || name.length > 20) {
+        errorDiv.textContent = '이름은 2~20자여야 합니다';
+        return;
+      }
+
+      if (!/^[가-힣a-zA-Z0-9]+$/.test(name)) {
+        errorDiv.textContent = '한글, 영문, 숫자만 사용 가능합니다';
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/player/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name: name })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          errorDiv.textContent = data.error || '오류가 발생했습니다';
+          return;
+        }
+
+        // 이름 저장
+        localStorage.setItem('playerName', name);
+        localStorage.setItem('playerData', JSON.stringify(data.player));
+
+        // 게임 페이지로 이동
+        window.location.href = '/game.html';
+      } catch (error) {
+        console.error('게임 시작 오류:', error);
+        errorDiv.textContent = '서버 오류가 발생했습니다';
+      }
+    }
+  </script>
+</body>
+</html>

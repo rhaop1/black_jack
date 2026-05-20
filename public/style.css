@@ -1,0 +1,796 @@
+/* 기본 스타일 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #d4af37;
+  --secondary-color: #1a472a;
+  --dark-color: #0a1a0f;
+  --light-color: #f0f0f0;
+  --danger-color: #dc3545;
+  --success-color: #28a745;
+  --text-color: #fff;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--dark-color) 0%, #1a3a2a 100%);
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 로그인 페이지 */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo h1 {
+  font-size: 3.5em;
+  color: var(--primary-color);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.logo p {
+  font-size: 1.2em;
+  color: #888;
+}
+
+.login-form {
+  background: rgba(26, 71, 42, 0.8);
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+.guide-text {
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 20px;
+  font-size: 0.9em;
+}
+
+.login-form input,
+.login-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  font-size: 1em;
+}
+
+.login-form input::placeholder {
+  color: #888;
+}
+
+.login-form input:focus,
+.login-form select:focus {
+  outline: none;
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+/* 버튼 */
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: var(--dark-color);
+  width: 100%;
+}
+
+.btn-primary:hover {
+  background: #e8c547;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+  background: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+.btn-danger {
+  background: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+.btn-home, .btn-stats {
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 8px 12px;
+  font-size: 0.9em;
+}
+
+.btn-action {
+  background: var(--primary-color);
+  color: var(--dark-color);
+  padding: 10px 15px;
+  margin: 0 5px;
+  flex: 1;
+  font-weight: bold;
+}
+
+.btn-action:hover {
+  background: #e8c547;
+  transform: scale(1.05);
+}
+
+.btn-large {
+  padding: 15px 30px;
+  font-size: 1.1em;
+}
+
+.btn-small {
+  padding: 5px 10px;
+  font-size: 0.85em;
+  margin: 0 2px;
+}
+
+.error-message {
+  color: #ff6b6b;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9em;
+  min-height: 20px;
+}
+
+.admin-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.admin-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.admin-link a:hover {
+  text-decoration: underline;
+}
+
+/* 게임 페이지 */
+.game-container {
+  display: grid;
+  grid-template-columns: 1fr 250px;
+  gap: 20px;
+  padding: 20px;
+}
+
+.game-header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(26, 71, 42, 0.6);
+  padding: 15px 20px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.player-info {
+  display: flex;
+  gap: 30px;
+}
+
+.player-info span {
+  font-size: 1.1em;
+}
+
+.player-info strong {
+  color: var(--primary-color);
+  font-size: 1.3em;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.game-main {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 게임 영역 */
+.dealer-area,
+.player-area {
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #0f2818 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 20px;
+  min-height: 200px;
+}
+
+.dealer-area h3,
+.player-area h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-size: 1.3em;
+}
+
+.cards-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  min-height: 100px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 70px;
+  height: 100px;
+  background: white;
+  border: 2px solid #333;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8em;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  animation: cardDeal 0.5s ease-out;
+}
+
+@keyframes cardDeal {
+  0% {
+    transform: translateX(-100px) rotateY(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) rotateY(0);
+    opacity: 1;
+  }
+}
+
+.card.hidden {
+  background: linear-gradient(135deg, #8B0000 0%, #4B0000 100%);
+  color: transparent;
+}
+
+.score {
+  font-size: 1.2em;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.game-status {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  min-height: 30px;
+  color: var(--primary-color);
+}
+
+.game-status.win {
+  background: rgba(40, 167, 69, 0.2);
+  color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+.game-status.loss {
+  background: rgba(220, 53, 69, 0.2);
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.game-status.push {
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* 베팅 패널 */
+.betting-panel {
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #0f2818 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.betting-panel h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.bet-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.bet-btn {
+  background: rgba(212, 175, 55, 0.3);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.bet-btn:hover {
+  background: rgba(212, 175, 55, 0.6);
+  transform: scale(1.05);
+}
+
+.current-bet {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  color: var(--primary-color);
+}
+
+.current-bet strong {
+  font-size: 1.4em;
+}
+
+/* 액션 패널 */
+.action-panel {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #0f2818 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+}
+
+/* 사이드바 */
+.sidebar {
+  grid-column: 2;
+  grid-row: 2;
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #0f2818 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 20px;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.history-section h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-size: 1.1em;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.history-item {
+  background: rgba(212, 175, 55, 0.1);
+  border-left: 3px solid var(--primary-color);
+  padding: 10px;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.history-item.win {
+  border-left-color: var(--success-color);
+  color: var(--success-color);
+}
+
+.history-item.loss {
+  border-left-color: var(--danger-color);
+  color: var(--danger-color);
+}
+
+.history-item.push {
+  border-left-color: var(--primary-color);
+}
+
+/* 모달 */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #1a3a2a 100%);
+  padding: 30px;
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close {
+  color: var(--primary-color);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #fff;
+}
+
+.modal-content h2 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
+}
+
+.stat-label {
+  color: #aaa;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  color: var(--primary-color);
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+/* 폼 */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  font-size: 1em;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.form-group input:disabled {
+  background: rgba(0, 0, 0, 0.3);
+  cursor: not-allowed;
+}
+
+/* 관리자 페이지 */
+.admin-container {
+  padding: 0;
+}
+
+.admin-login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(26, 71, 42, 0.8);
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.admin-header h1 {
+  color: var(--primary-color);
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-actions a {
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* 통계 섹션 */
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin: 20px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #8b7520 100%);
+  padding: 25px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+}
+
+.stat-card .stat-label {
+  color: var(--dark-color);
+  font-size: 0.95em;
+  margin-bottom: 10px;
+}
+
+.stat-card .stat-value {
+  color: var(--dark-color);
+  font-size: 2em;
+  font-weight: bold;
+}
+
+/* 검색 섹션 */
+.search-section {
+  margin: 20px;
+}
+
+.search-section input {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px 15px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  font-size: 1em;
+}
+
+.search-section input::placeholder {
+  color: #888;
+}
+
+.search-section input:focus {
+  outline: none;
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 플레이어 섹션 */
+.players-section,
+.logs-section {
+  margin: 20px;
+}
+
+.players-section h2,
+.logs-section h2 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  background: rgba(26, 71, 42, 0.6);
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+}
+
+.players-table,
+.logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.players-table thead,
+.logs-table thead {
+  background: rgba(212, 175, 55, 0.2);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.players-table th,
+.logs-table th {
+  color: var(--primary-color);
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.players-table td,
+.logs-table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.players-table tbody tr:hover,
+.logs-table tbody tr:hover {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .game-container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    grid-column: 1;
+  }
+
+  .bet-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .action-panel {
+    flex-direction: column;
+  }
+
+  .btn-action {
+    margin: 5px 0;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .admin-actions {
+    flex-wrap: wrap;
+  }
+
+  .stats-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .player-info {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .login-form {
+    max-width: 100%;
+  }
+
+  .logo h1 {
+    font-size: 2.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-container {
+    padding: 10px;
+  }
+
+  .logo h1 {
+    font-size: 2em;
+  }
+
+  .login-form {
+    padding: 20px;
+  }
+
+  .bet-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-section {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    width: 60px;
+    height: 90px;
+    font-size: 1.5em;
+  }
+
+  .stat-card .stat-value {
+    font-size: 1.5em;
+  }
+}

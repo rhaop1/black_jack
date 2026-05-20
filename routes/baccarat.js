@@ -92,14 +92,18 @@ router.post('/start', (req, res) => {
 
     // 자연 판정 (Natural 8, 9)
     let result = null;
+    let payout = 0;
     if ((playerValue === 8 || playerValue === 9) || (bankerValue === 8 || bankerValue === 9)) {
       // 자동 종료
       if (playerValue > bankerValue) {
         result = 'player';
+        payout = Math.floor(bet * 2);
       } else if (bankerValue > playerValue) {
         result = 'banker';
+        payout = Math.floor(bet * 1.9);
       } else {
         result = 'tie';
+        payout = bet * 3;
       }
     }
 
@@ -111,6 +115,7 @@ router.post('/start', (req, res) => {
       bankerValue: bankerValue,
       gameOver: result !== null,
       result: result,
+      payout: payout,
       chips: player.chips - bet
     });
   } catch (error) {

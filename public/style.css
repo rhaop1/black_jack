@@ -16,16 +16,23 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #0a0e27 0%, #1a0033 50%, #0f1a2e 100%);
   color: var(--text-color);
   min-height: 100vh;
+  letter-spacing: 0.3px;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+}
+
+#loginScreen {
+  max-width: 100% !important;
+  width: 100%;
+  padding: 0;
 }
 
 /* 로그인 페이지 */
@@ -35,119 +42,137 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 20px;
+  padding: 40px 20px;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
 }
 
 .logo {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .logo h1 {
-  font-size: 4.5em;
-  background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+  font-size: 5.5em;
+  background: linear-gradient(45deg, #FFE135, #FFB700, #FFE135);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
   margin-bottom: 15px;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   font-weight: 900;
-  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
+  filter: drop-shadow(0 0 30px rgba(255, 225, 53, 0.7)) drop-shadow(0 0 60px rgba(255, 183, 0, 0.4));
+  text-shadow: 0 0 80px rgba(255, 225, 53, 0.3);
 }
 
 .logo p {
-  font-size: 1.3em;
-  color: #FFD700;
-  letter-spacing: 1.5px;
+  font-size: 1.6em;
+  color: #FFE135;
+  letter-spacing: 2px;
   font-weight: 600;
+  text-shadow: 0 0 20px rgba(255, 225, 53, 0.5);
 }
 
 .login-form {
-  background: linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(30, 10, 50, 0.95) 100%);
+  background: linear-gradient(135deg, rgba(15, 15, 35, 0.97) 0%, rgba(30, 10, 50, 0.97) 100%);
   border: 3px solid;
-  border-image: linear-gradient(135deg, #FFD700, #FFA500, #FFD700) 1;
-  border-radius: 15px;
-  padding: 50px;
+  border-image: linear-gradient(135deg, #FFE135, #FFB700, #FFE135) 1;
+  border-radius: 20px;
+  padding: 70px 60px;
   width: 100%;
-  max-width: 450px;
-  box-shadow: 0 0 50px rgba(255, 215, 0, 0.4), inset 0 0 30px rgba(255, 215, 0, 0.1), 0 0 100px rgba(255, 0, 255, 0.1);
+  max-width: 550px;
+  box-shadow: 0 0 60px rgba(255, 225, 53, 0.3), 
+              inset 0 0 40px rgba(255, 225, 53, 0.08), 
+              0 0 120px rgba(255, 0, 150, 0.15);
+  margin: 0 auto !important;
 }
 
 .guide-text {
   text-align: center;
-  color: #FFD700;
-  margin-bottom: 25px;
-  font-size: 0.95em;
+  color: #FFE135;
+  margin-bottom: 35px;
+  font-size: 1.1em;
   font-weight: 500;
   letter-spacing: 0.5px;
+  line-height: 1.6;
 }
 
 .login-form input,
 .login-form select {
   width: 100%;
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 2px solid var(--primary-color);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
+  padding: 18px 16px;
+  margin-bottom: 25px;
+  border: 2.5px solid var(--primary-color);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
   color: var(--text-color);
-  font-size: 1em;
+  font-size: 1.05em;
   backdrop-filter: blur(10px);
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .login-form input::placeholder {
-  color: #888;
+  color: #999;
 }
 
 .login-form input:focus,
 .login-form select:focus {
   outline: none;
-  border-color: #FFD700;
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5), inset 0 0 10px rgba(255, 215, 0, 0.1);
+  border-color: #FFE135;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 25px rgba(255, 225, 53, 0.6), inset 0 0 12px rgba(255, 225, 53, 0.1);
 }
 
 /* 버튼 */
 button {
-  padding: 12px 20px;
+  padding: 14px 22px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 1em;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  font-family: inherit;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
-  color: #000;
+  background: linear-gradient(135deg, #FFE135 0%, #FFB700 50%, #FFE135 100%);
+  color: #1a1a1a;
   width: 100%;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 16px 30px;
-  font-size: 1.1em;
+  padding: 20px 30px;
+  font-size: 1.2em;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4), 0 0 20px rgba(255, 165, 0, 0.3);
-  text-transform: uppercase;
-  border-radius: 8px;
+  box-shadow: 0 10px 35px rgba(255, 225, 53, 0.4), 
+              0 0 25px rgba(255, 183, 0, 0.3),
+              inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #FFA500 0%, #FFD700 50%, #FFA500 100%);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 35px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 165, 0, 0.5);
+  background: linear-gradient(135deg, #FFB700 0%, #FFE135 50%, #FFB700 100%);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 45px rgba(255, 225, 53, 0.7), 
+              0 0 35px rgba(255, 183, 0, 0.6),
+              inset 0 -2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:active {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 8px 25px rgba(255, 225, 53, 0.5);
 }
 
 .btn-secondary {
-  background: rgba(212, 175, 55, 0.15);
+  background: rgba(255, 225, 53, 0.12);
   color: var(--primary-color);
   border: 2px solid rgba(212, 175, 55, 0.6);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -894,17 +919,21 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
+  width: 100%;
 }
 
 .game-selection-header h1 {
-  font-size: 3.5em;
-  background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+  font-size: 4.8em;
+  background: linear-gradient(45deg, #FFE135, #FFB700, #FFE135);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
-  filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+  text-shadow: 0 0 40px rgba(255, 225, 53, 0.6);
+  filter: drop-shadow(0 0 25px rgba(255, 225, 53, 0.6)) drop-shadow(0 0 50px rgba(255, 183, 0, 0.3));
+  letter-spacing: 3px;
+  font-weight: 900;
+  margin: 0;
 }
 
 .player-info-small {
@@ -936,51 +965,57 @@ button {
 .game-selection-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
-  margin-bottom: 40px;
+  gap: 40px;
+  margin-bottom: 50px;
   flex: 1;
-  max-width: 800px;
+  max-width: 950px;
   width: 100%;
 }
 
 .game-card {
-  background: linear-gradient(135deg, rgba(20, 10, 40, 0.9) 0%, rgba(30, 15, 50, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(20, 10, 40, 0.95) 0%, rgba(30, 15, 50, 0.95) 100%);
   border: 3px solid;
-  border-image: linear-gradient(135deg, #FFD700, #FFA500, #FFD700) 1;
-  border-radius: 15px;
-  padding: 40px 30px;
+  border-image: linear-gradient(135deg, #FFE135, #FFB700, #FFE135) 1;
+  border-radius: 18px;
+  padding: 55px 45px;
   text-align: center;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.2);
+  gap: 25px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 225, 53, 0.25), inset 0 1px 0 rgba(255, 225, 53, 0.1);
+  min-height: 340px;
+  justify-content: center;
 }
 
 .game-card:hover {
-  transform: translateY(-15px) scale(1.05);
-  box-shadow: 0 15px 50px rgba(255, 215, 0, 0.4), 0 0 50px rgba(255, 165, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.1);
-  border-image: linear-gradient(135deg, #FFA500, #FFD700, #FFA500) 1;
+  transform: translateY(-18px) scale(1.06);
+  box-shadow: 0 18px 60px rgba(255, 225, 53, 0.5), 0 0 60px rgba(255, 183, 0, 0.4), inset 0 0 25px rgba(255, 225, 53, 0.12);
+  border-image: linear-gradient(135deg, #FFB700, #FFE135, #FFB700) 1;
 }
 
 .game-icon {
-  font-size: 2em;
+  font-size: 3em;
+  filter: drop-shadow(0 0 8px rgba(255, 225, 53, 0.5));
 }
 
 .game-card h2 {
-  font-size: 2.2em;
-  color: #FFD700;
+  font-size: 2.8em;
+  color: #FFE135;
   margin: 0;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(255, 225, 53, 0.4);
 }
 
 .game-card p {
-  color: #FFD700;
-  font-size: 1.1em;
+  color: #FFE135;
+  font-size: 1.3em;
   margin: 0;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 10px rgba(255, 225, 53, 0.2);
 }
 
 .game-stats {
@@ -992,50 +1027,60 @@ button {
 }
 
 .btn-play {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  color: #000;
-  padding: 14px 28px;
+  background: linear-gradient(135deg, #FFE135 0%, #FFB700 100%);
+  color: #1a1a1a;
+  padding: 18px 40px;
   border: none;
-  border-radius: 8px;
-  font-weight: 700;
+  border-radius: 10px;
+  font-weight: 800;
   cursor: pointer;
-  font-size: 1.1em;
+  font-size: 1.3em;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+  letter-spacing: 2px;
+  box-shadow: 0 8px 30px rgba(255, 225, 53, 0.4), inset 0 -2px 8px rgba(0, 0, 0, 0.15);
+  font-family: inherit;
 }
 
 .btn-play:hover {
-  background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+  background: linear-gradient(135deg, #FFB700 0%, #FFE135 100%);
+  transform: translateY(-5px) scale(1.08);
+  box-shadow: 0 12px 40px rgba(255, 225, 53, 0.6), inset 0 -2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .account-info {
   display: flex;
   justify-content: center;
-  gap: 50px;
-  padding: 25px;
-  background: linear-gradient(135deg, rgba(20, 10, 40, 0.8) 0%, rgba(30, 15, 50, 0.8) 100%);
-  border: 2px solid;
-  border-image: linear-gradient(135deg, #FFD700, #FFA500) 1;
-  border-radius: 12px;
+  gap: 60px;
+  padding: 35px 40px;
+  background: linear-gradient(135deg, rgba(20, 10, 40, 0.9) 0%, rgba(30, 15, 50, 0.9) 100%);
+  border: 2.5px solid;
+  border-image: linear-gradient(135deg, #FFE135, #FFB700) 1;
+  border-radius: 15px;
   margin-top: auto;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+  box-shadow: 0 0 40px rgba(255, 225, 53, 0.3), inset 0 1px 0 rgba(255, 225, 53, 0.1);
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
 }
 
 .info-item span {
-  color: #FFD700;
-  font-size: 0.95em;
-  font-weight: 600;
+  color: #FFE135;
+  font-size: 1.05em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(255, 225, 53, 0.3);
+}
+
+.info-item strong {
+  font-size: 2.2em;
+  color: #FFE135;
+  font-weight: 900;
+  text-shadow: 0 0 12px rgba(255, 225, 53, 0.4);
 }
 
 .info-item strong {

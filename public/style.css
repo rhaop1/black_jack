@@ -1346,10 +1346,10 @@ button {
   background: transparent;
   border: 2px solid rgba(212, 175, 55, 0.5);
   color: var(--light-color);
-  padding: 12px 30px;
-  font-size: 1.05em;
+  padding: 8px 20px;
+  font-size: 0.95em;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 8px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 600;
   letter-spacing: 0.5px;

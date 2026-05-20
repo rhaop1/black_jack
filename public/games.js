@@ -477,7 +477,10 @@ async function bcDisplayThirdCards(playerCards, bankerCards) {
   // 플레이어 3번째 카드 표시
   if (playerCards.length > 2) {
     const cardHTML = createCardElement(playerCards[2]);
-    playerCardsDiv.innerHTML += cardHTML;
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = cardHTML;
+    const cardElement = tempDiv.firstChild;
+    playerCardsDiv.appendChild(cardElement);
     playCardSound();
     await new Promise(resolve => setTimeout(resolve, 600));
   }
@@ -485,7 +488,10 @@ async function bcDisplayThirdCards(playerCards, bankerCards) {
   // 뱅커 3번째 카드 표시
   if (bankerCards.length > 2) {
     const cardHTML = createCardElement(bankerCards[2]);
-    bankerCardsDiv.innerHTML += cardHTML;
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = cardHTML;
+    const cardElement = tempDiv.firstChild;
+    bankerCardsDiv.appendChild(cardElement);
     playCardSound();
     await new Promise(resolve => setTimeout(resolve, 600));
   }

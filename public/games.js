@@ -141,20 +141,26 @@ async function bjDisplayCards() {
   playerCardsDiv.innerHTML = '';
   dealerCardsDiv.innerHTML = '';
 
-  // 플레이어 카드 하나씩 추가 (사운드 포함)
-  for (let i = 0; i < bjPlayerHand.length; i++) {
-    const cardHTML = createCardElement(bjPlayerHand[i]);
-    playerCardsDiv.innerHTML += cardHTML;
-    playCardSound();
-    await new Promise(resolve => setTimeout(resolve, 150));  // 150ms 딜레이
-  }
+  // 카드를 교대로 하나씩 표시: P1, D1, P2, D2
+  // 최대 길이 구하기
+  const maxLength = Math.max(bjPlayerHand.length, bjDealerHand.length);
 
-  // 딜러 카드 하나씩 추가 (사운드 포함)
-  for (let i = 0; i < bjDealerHand.length; i++) {
-    const cardHTML = createCardElement(bjDealerHand[i]);
-    dealerCardsDiv.innerHTML += cardHTML;
-    playCardSound();
-    await new Promise(resolve => setTimeout(resolve, 150));  // 150ms 딜레이
+  for (let i = 0; i < maxLength; i++) {
+    // 플레이어 카드 표시
+    if (i < bjPlayerHand.length) {
+      const cardHTML = createCardElement(bjPlayerHand[i]);
+      playerCardsDiv.innerHTML += cardHTML;
+      playCardSound();
+      await new Promise(resolve => setTimeout(resolve, 300));  // 300ms 딜레이
+    }
+
+    // 딜러 카드 표시
+    if (i < bjDealerHand.length) {
+      const cardHTML = createCardElement(bjDealerHand[i]);
+      dealerCardsDiv.innerHTML += cardHTML;
+      playCardSound();
+      await new Promise(resolve => setTimeout(resolve, 300));  // 300ms 딜레이
+    }
   }
 }
 
@@ -400,20 +406,25 @@ async function bcDisplayCards(playerCards, bankerCards) {
   playerCardsDiv.innerHTML = '';
   bankerCardsDiv.innerHTML = '';
 
-  // 플레이어 카드 하나씩 추가 (사운드 포함)
-  for (let i = 0; i < playerCards.length; i++) {
-    const cardHTML = createCardElement(playerCards[i]);
-    playerCardsDiv.innerHTML += cardHTML;
-    playCardSound();
-    await new Promise(resolve => setTimeout(resolve, 150));  // 150ms 딜레이
-  }
+  // 카드를 교대로 하나씩 표시: Pl1, B1, Pl2, B2
+  const maxLength = Math.max(playerCards.length, bankerCards.length);
 
-  // 뱅커 카드 하나씩 추가 (사운드 포함)
-  for (let i = 0; i < bankerCards.length; i++) {
-    const cardHTML = createCardElement(bankerCards[i]);
-    bankerCardsDiv.innerHTML += cardHTML;
-    playCardSound();
-    await new Promise(resolve => setTimeout(resolve, 150));  // 150ms 딜레이
+  for (let i = 0; i < maxLength; i++) {
+    // 플레이어 카드 표시
+    if (i < playerCards.length) {
+      const cardHTML = createCardElement(playerCards[i]);
+      playerCardsDiv.innerHTML += cardHTML;
+      playCardSound();
+      await new Promise(resolve => setTimeout(resolve, 300));  // 300ms 딜레이
+    }
+
+    // 뱅커 카드 표시
+    if (i < bankerCards.length) {
+      const cardHTML = createCardElement(bankerCards[i]);
+      bankerCardsDiv.innerHTML += cardHTML;
+      playCardSound();
+      await new Promise(resolve => setTimeout(resolve, 300));  // 300ms 딜레이
+    }
   }
 }
 

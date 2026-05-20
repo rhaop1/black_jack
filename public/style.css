@@ -735,23 +735,31 @@ button {
 .form-group select {
   width: 100%;
   padding: 10px;
-  border: 1px solid var(--primary-color);
+  border: 2px solid var(--primary-color);
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
+  background: rgba(0, 0, 0, 0.5);
+  color: #FFE135;
   font-size: 1em;
+  font-weight: 500;
+}
+
+.form-group input::placeholder {
+  color: #999;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.2);
+  border-color: #FFE135;
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 15px rgba(255, 225, 53, 0.5), inset 0 0 8px rgba(255, 225, 53, 0.1);
 }
 
 .form-group input:disabled {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.6);
+  color: #FFB700;
   cursor: not-allowed;
+  opacity: 0.8;
 }
 
 /* 관리자 페이지 */

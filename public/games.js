@@ -2,6 +2,15 @@
 let currentPlayer = null;
 let currentGame = 'blackjack';  // 현재 게임 ('blackjack' 또는 'baccarat')
 
+// 카드 효과음
+const cardSound = new Audio('/card.mp3');
+cardSound.volume = 1.0;  // 최대 볼륨 (0.0 ~ 1.0)
+
+function playCardSound() {
+  cardSound.currentTime = 0;  // 처음부터 재생
+  cardSound.play().catch(e => console.log('음성 재생 실패:', e));
+}
+
 // ========== 블랙잭 변수 ==========
 let bjCurrentBet = 0;
 let bjGameInProgress = false;
@@ -108,7 +117,7 @@ async function bjStartNewGame() {
     bjPlayerHand = data.playerHand;
     bjDealerHand = data.dealerHand;
 
-    bjDisplayCards();
+    await bjDisplayCards();
     bjUpdateScores(data.playerScore, data.dealerScore);
     document.getElementById('bjBettingPanel').style.display = 'none';
     document.getElementById('bjActionPanel').style.display = 'flex';
@@ -125,12 +134,28 @@ async function bjStartNewGame() {
 }
 
 // 블랙잭 카드 표시
-function bjDisplayCards() {
+async function bjDisplayCards() {
   const playerCardsDiv = document.getElementById('playerCards');
   const dealerCardsDiv = document.getElementById('dealerCards');
 
-  playerCardsDiv.innerHTML = bjPlayerHand.map(card => createCardElement(card)).join('');
-  dealerCardsDiv.innerHTML = bjDealerHand.map(card => createCardElement(card)).join('');
+  playerCardsDiv.innerHTML = '';
+  dealerCardsDiv.innerHTML = '';
+
+  // 플레이어 카드 하나씩 추가 (사운드 포함)
+  for (let i = 0; i < bjPlayerHand.length; i++) {
+    const cardHTML = createCardElement(bjPlayerHand[i]);
+    playerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 150));  // 150ms 딜레이
+  }
+
+  // 딜러 카드 하나씩 추가 (사운드 포함)
+  for (let i = 0; i < bjDealerHand.length; i++) {
+    const cardHTML = createCardElement(bjDealerHand[i]);
+    dealerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 150));  // 150ms 딜레이
+  }
 }
 
 // 블랙잭 점수 업데이트
@@ -159,7 +184,7 @@ async function bjHit() {
     }
 
     bjPlayerHand = data.playerHand;
-    bjDisplayCards();
+    await bjDisplayCards();
     bjUpdateScores(data.playerScore, data.dealerScore);
 
     if (data.gameOver) {
@@ -191,7 +216,7 @@ async function bjStand() {
 
     bjPlayerHand = data.playerHand;
     bjDealerHand = data.dealerHand;
-    bjDisplayCards();
+    await bjDisplayCards();
     bjUpdateScores(data.playerScore, data.dealerScore);
     bjHandleGameResult(data.result, data.payout);
   } catch (error) {
@@ -223,7 +248,7 @@ async function bjDoubleDown() {
 
     bjPlayerHand = data.playerHand;
     bjDealerHand = data.dealerHand;
-    bjDisplayCards();
+    await bjDisplayCards();
     bjUpdateScores(data.playerScore, data.dealerScore);
     bjHandleGameResult(data.result, data.payout);
   } catch (error) {
@@ -351,7 +376,7 @@ async function bcStartNewGame() {
     updatePlayerDisplay();
 
     // UI 업데이트
-    bcDisplayCards(data.playerHand, data.bankerHand);
+    await bcDisplayCards(data.playerHand, data.bankerHand);
     bcUpdateScores(data.playerValue, data.bankerValue);
     document.getElementById('bcBettingPanel').style.display = 'none';
     document.getElementById('bcActionPanel').style.display = 'flex';
@@ -368,12 +393,28 @@ async function bcStartNewGame() {
 }
 
 // 바카라 카드 표시
-function bcDisplayCards(playerCards, bankerCards) {
+async function bcDisplayCards(playerCards, bankerCards) {
   const playerCardsDiv = document.getElementById('playerCards-bc');
   const bankerCardsDiv = document.getElementById('bankerCards');
 
-  playerCardsDiv.innerHTML = playerCards.map(card => createCardElement(card)).join('');
-  bankerCardsDiv.innerHTML = bankerCards.map(card => createCardElement(card)).join('');
+  playerCardsDiv.innerHTML = '';
+  bankerCardsDiv.innerHTML = '';
+
+  // 플레이어 카드 하나씩 추가 (사운드 포함)
+  for (let i = 0; i < playerCards.length; i++) {
+    const cardHTML = createCardElement(playerCards[i]);
+    playerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 150));  // 150ms 딜레이
+  }
+
+  // 뱅커 카드 하나씩 추가 (사운드 포함)
+  for (let i = 0; i < bankerCards.length; i++) {
+    const cardHTML = createCardElement(bankerCards[i]);
+    bankerCardsDiv.innerHTML += cardHTML;
+    playCardSound();
+    await new Promise(resolve => setTimeout(resolve, 150));  // 150ms 딜레이
+  }
 }
 
 // 바카라 점수 업데이트
@@ -400,7 +441,7 @@ async function bcDrawCards() {
       return;
     }
 
-    bcDisplayCards(data.playerHand, data.bankerHand);
+    await bcDisplayCards(data.playerHand, data.bankerHand);
     bcUpdateScores(data.playerValue, data.bankerValue);
     bcHandleGameResult(data.result, data.payout);
   } catch (error) {

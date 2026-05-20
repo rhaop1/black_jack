@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: milk-casino
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        value: milk-casino-secret-key-v2
+      - key: ADMIN_ID
+        value: admin
+      - key: ADMIN_PASSWORD
+        value: milkcassino486
+      - key: DB_PATH
+        value: ./database/blackjack.db
+      - key: CASINO_NAME
+        value: MILK CASINO
+    disk:
+      name: db-storage
+      mountPath: /app/database
+      sizeGB: 1

@@ -134,16 +134,66 @@ router.post('/draw', (req, res) => {
     const playerValue = calculateHandValue(gameState.playerHand);
     const bankerValue = calculateHandValue(gameState.bankerHand);
 
-    // 플레이어 3번째 카드
+    // 플레이어 3번째 카드 규칙
+    let playerDrew = false;
     if (playerValue <= 5) {
       gameState.playerHand.push(gameState.deck.pop());
       gameState.deckUsed++;
+      playerDrew = true;
     }
 
-    // 뱅커 3번째 카드
-    if (bankerValue <= 5) {
-      gameState.bankerHand.push(gameState.deck.pop());
-      gameState.deckUsed++;
+    // 뱅커 3번째 카드 규칙 (플레이어의 3번째 카드를 고려)
+    // Tableau 규칙: https://en.wikipedia.org/wiki/Baccarat#Tableau_of_drawing_rules
+    if (playerDrew) {
+      const playerThirdCard = gameState.playerHand[2].rank;
+      let playerThirdNumValue = 0;
+      
+      // 카드의 실제 숫자 값 계산 (modulo 10 전에)
+      if (playerThirdCard === 'J' || playerThirdCard === 'Q' || playerThirdCard === 'K' || playerThirdCard === '10') {
+        playerThirdNumValue = 10;
+      } else if (playerThirdCard === 'A') {
+        playerThirdNumValue = 1;
+      } else {
+        playerThirdNumValue = parseInt(playerThirdCard);
+      }
+      
+      // 플레이어가 3번째 카드를 받은 경우 복잡한 규칙 적용
+      if (bankerValue === 0 || bankerValue === 1 || bankerValue === 2) {
+        gameState.bankerHand.push(gameState.deck.pop());
+        gameState.deckUsed++;
+      } else if (bankerValue === 3) {
+        // 플레이어 3번째 카드가 8이 아니면 뱅커도 받음
+        if (playerThirdNumValue !== 8) {
+          gameState.bankerHand.push(gameState.deck.pop());
+          gameState.deckUsed++;
+        }
+      } else if (bankerValue === 4) {
+        // 플레이어 3번째 카드가 2-7이면 뱅커도 받음
+        if (playerThirdNumValue >= 2 && playerThirdNumValue <= 7) {
+          gameState.bankerHand.push(gameState.deck.pop());
+          gameState.deckUsed++;
+        }
+      } else if (bankerValue === 5) {
+        // 플레이어 3번째 카드가 4-7이면 뱅커도 받음
+        if (playerThirdNumValue >= 4 && playerThirdNumValue <= 7) {
+          gameState.bankerHand.push(gameState.deck.pop());
+          gameState.deckUsed++;
+        }
+      } else if (bankerValue === 6) {
+        // 플레이어 3번째 카드가 6-7이면 뱅커도 받음
+        if (playerThirdNumValue >= 6 && playerThirdNumValue <= 7) {
+          gameState.bankerHand.push(gameState.deck.pop());
+          gameState.deckUsed++;
+        }
+      }
+      // bankerValue === 7: 스탠드 (아무것도 안함)
+    } else {
+      // 플레이어가 3번째 카드를 받지 않은 경우 (값 6-7)
+      // 뱅커는 플레이어와 같은 규칙 적용: 5 이하면 받음
+      if (bankerValue <= 5) {
+        gameState.bankerHand.push(gameState.deck.pop());
+        gameState.deckUsed++;
+      }
     }
 
     const finalPlayerValue = calculateHandValue(gameState.playerHand);

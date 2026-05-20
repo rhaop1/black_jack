@@ -31,10 +31,16 @@ router.post('/login', (req, res) => {
         name: player.name,
         chips: player.chips,
         balance: player.balance,
-        total_games: player.total_games,
-        total_wins: player.total_wins,
-        total_losses: player.total_losses,
-        total_pushes: player.total_pushes
+        // 블랙잭 통계
+        bj_total_games: player.bj_total_games || 0,
+        bj_total_wins: player.bj_total_wins || 0,
+        bj_total_losses: player.bj_total_losses || 0,
+        bj_total_pushes: player.bj_total_pushes || 0,
+        // 바카라 통계
+        bc_total_games: player.bc_total_games || 0,
+        bc_player_wins: player.bc_player_wins || 0,
+        bc_banker_wins: player.bc_banker_wins || 0,
+        bc_ties: player.bc_ties || 0
       }
     });
   } catch (error) {
@@ -60,11 +66,18 @@ router.get('/:name', (req, res) => {
         name: player.name,
         chips: player.chips,
         balance: player.balance,
-        total_games: player.total_games,
-        total_wins: player.total_wins,
-        total_losses: player.total_losses,
-        total_pushes: player.total_pushes,
-        biggest_win: player.biggest_win,
+        // 블랙잭 통계
+        bj_total_games: player.bj_total_games || 0,
+        bj_total_wins: player.bj_total_wins || 0,
+        bj_total_losses: player.bj_total_losses || 0,
+        bj_total_pushes: player.bj_total_pushes || 0,
+        bj_biggest_win: player.bj_biggest_win || 0,
+        // 바카라 통계
+        bc_total_games: player.bc_total_games || 0,
+        bc_player_wins: player.bc_player_wins || 0,
+        bc_banker_wins: player.bc_banker_wins || 0,
+        bc_ties: player.bc_ties || 0,
+        bc_biggest_win: player.bc_biggest_win || 0,
         created_at: player.created_at,
         last_played: player.last_played
       }
@@ -88,6 +101,23 @@ router.get('/:name/history', (req, res) => {
     });
   } catch (error) {
     console.error('게임 히스토리 조회 오류:', error);
+    res.status(500).json({ error: '서버 오류가 발생했습니다' });
+  }
+});
+
+// 플레이어 바카라 히스토리 조회
+router.get('/:name/baccarat-history', (req, res) => {
+  const { name } = req.params;
+  const limit = parseInt(req.query.limit) || 10;
+
+  try {
+    const history = db.getPlayerBaccaratHistory(name, limit);
+    res.json({
+      success: true,
+      history: history
+    });
+  } catch (error) {
+    console.error('바카라 히스토리 조회 오류:', error);
     res.status(500).json({ error: '서버 오류가 발생했습니다' });
   }
 });

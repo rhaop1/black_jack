@@ -9,6 +9,7 @@ const path = require('path');
 // 라우트 임포트
 const playerRoutes = require('./routes/player');
 const gameRoutes = require('./routes/game');
+const baccaratRoutes = require('./routes/baccarat');
 const adminRoutes = require('./routes/admin');
 
 const app = express();
@@ -37,6 +38,7 @@ app.use(session(sessionConfig));
 // API 라우트
 app.use('/api/player', playerRoutes);
 app.use('/api/game', gameRoutes);
+app.use('/api/baccarat', baccaratRoutes);
 app.use('/api/admin', adminRoutes);
 
 // 정적 파일 라우트

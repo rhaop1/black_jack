@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>바카라 게임</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container game-container">
+    <header class="game-header">
+      <div class="player-info">
+        <span>플레이어: <strong id="playerNameDisplay"></strong></span>
+        <span>칩: <strong id="chipsDisplay">0</strong></span>
+        <span>잔액: <strong id="balanceDisplay">$0.00</strong></span>
+      </div>
+      <div class="header-actions">
+        <button onclick="goHome()" class="btn-home">🏠 게임선택</button>
+        <button onclick="showStats()" class="btn-stats">📊 통계</button>
+      </div>
+    </header>
+
+    <main class="game-main">
+      <!-- 플레이어 영역 -->
+      <div class="dealer-area">
+        <h3>플레이어 (Player)</h3>
+        <div class="cards-container" id="playerCards"></div>
+        <div class="score">점수: <span id="playerScore">0</span></div>
+      </div>
+
+      <!-- 뱅커 영역 -->
+      <div class="player-area">
+        <h3>뱅커 (Banker)</h3>
+        <div class="cards-container" id="bankerCards"></div>
+        <div class="score">점수: <span id="bankerScore">0</span></div>
+      </div>
+
+      <!-- 게임 상태 -->
+      <div id="gameStatus" class="game-status"></div>
+
+      <!-- 베팅 패널 -->
+      <div id="bettingPanel" class="betting-panel">
+        <h3>베팅 선택</h3>
+        <div class="baccarat-bet-buttons">
+          <button onclick="selectBet('player')" class="bet-type-btn player-bet">
+            <div class="bet-label">플레이어</div>
+            <div class="bet-payout">배당: 1배</div>
+          </button>
+          <button onclick="selectBet('banker')" class="bet-type-btn banker-bet">
+            <div class="bet-label">뱅커</div>
+            <div class="bet-payout">배당: 0.95배</div>
+          </button>
+          <button onclick="selectBet('tie')" class="bet-type-btn tie-bet">
+            <div class="bet-label">타이</div>
+            <div class="bet-payout">배당: 8배</div>
+          </button>
+        </div>
+        
+        <div class="bet-buttons" id="chipButtonsContainer" style="display: none;">
+          <button onclick="placeBet(1)" class="bet-btn">1칩</button>
+          <button onclick="placeBet(5)" class="bet-btn">5칩</button>
+          <button onclick="placeBet(25)" class="bet-btn">25칩</button>
+          <button onclick="placeBet(100)" class="bet-btn">100칩</button>
+        </div>
+        <div class="current-bet">현재 베팅: <span id="currentBet">0</span>칩 | 타입: <span id="currentBetType">-</span></div>
+        <button onclick="startNewGame()" class="btn-primary btn-large">게임 시작</button>
+      </div>
+
+      <!-- 액션 버튼 -->
+      <div id="actionPanel" class="action-panel" style="display: none;">
+        <button onclick="drawCards()" class="btn-action">카드 드로우</button>
+      </div>
+    </main>
+
+    <!-- 사이드바: 게임 히스토리 -->
+    <aside class="sidebar">
+      <div class="history-section">
+        <h3>최근 게임</h3>
+        <div id="gameHistory" class="history-list"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 통계 모달 -->
+  <div id="statsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeStats()">&times;</span>
+      <h2>바카라 통계</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">총 게임</div>
+          <div class="stat-value" id="statTotalGames">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">플레이어 승</div>
+          <div class="stat-value" id="statPlayerWins">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">뱅커 승</div>
+          <div class="stat-value" id="statBankerWins">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">타이</div>
+          <div class="stat-value" id="statTies">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">최대 승리</div>
+          <div class="stat-value" id="statBiggestWin">$0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="baccarat.js"></script>
+</body>
+</html>

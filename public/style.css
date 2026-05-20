@@ -705,6 +705,215 @@ button {
   background: rgba(212, 175, 55, 0.1);
 }
 
+/* 게임 선택 화면 */
+.game-selection-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.game-selection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.game-selection-header h1 {
+  font-size: 3em;
+  color: var(--primary-color);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+.player-info-small {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 1.1em;
+}
+
+.btn-logout,
+.btn-admin {
+  padding: 8px 15px;
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover,
+.btn-admin:hover {
+  background: rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+}
+
+.game-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+  flex: 1;
+}
+
+.game-card {
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #0f2818 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.game-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
+  border-color: #fff;
+}
+
+.game-icon {
+  font-size: 3em;
+}
+
+.game-card h2 {
+  font-size: 1.8em;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.game-card p {
+  color: #aaa;
+  margin: 0;
+}
+
+.game-stats {
+  color: var(--primary-color);
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+.btn-play {
+  background: var(--primary-color);
+  color: var(--dark-color);
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+.btn-play:hover {
+  background: #e8c547;
+  transform: scale(1.05);
+}
+
+.account-info {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 20px;
+  background: rgba(26, 71, 42, 0.6);
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+  margin-top: auto;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.info-item span {
+  color: #aaa;
+  font-size: 0.9em;
+}
+
+.info-item strong {
+  color: var(--primary-color);
+  font-size: 1.5em;
+}
+
+/* 바카라 베팅 스타일 */
+.baccarat-bet-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.bet-type-btn {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  padding: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-weight: bold;
+}
+
+.bet-type-btn:hover {
+  background: rgba(212, 175, 55, 0.2);
+  transform: scale(1.05);
+}
+
+.bet-type-btn.selected {
+  background: var(--primary-color);
+  color: var(--dark-color);
+}
+
+.bet-type-btn.player-bet {
+  border-color: #4169E1;
+}
+
+.bet-type-btn.player-bet.selected {
+  background: #4169E1;
+  color: white;
+}
+
+.bet-type-btn.banker-bet {
+  border-color: #DC143C;
+}
+
+.bet-type-btn.banker-bet.selected {
+  background: #DC143C;
+  color: white;
+}
+
+.bet-type-btn.tie-bet {
+  border-color: #FFD700;
+}
+
+.bet-type-btn.tie-bet.selected {
+  background: #FFD700;
+  color: var(--dark-color);
+}
+
+.bet-label {
+  font-size: 1.1em;
+}
+
+.bet-payout {
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .game-container {

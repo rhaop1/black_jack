@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>블랙잭 - 카지노 게임</title>
+  <title>카지노 게임 - 블랙잭 & 바카라</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <div class="login-container">
+    <!-- 플레이어 로그인 화면 (처음) -->
+    <div id="loginScreen" class="login-container" style="display: block;">
       <div class="logo">
-        <h1>🎰 BLACKJACK</h1>
-        <p>클래식 카지노 게임</p>
+        <h1>🎰 CASINO</h1>
+        <p>블랙잭 & 바카라 게임</p>
       </div>
       <div class="login-form">
         <p class="guide-text">처음이신가요? 이름을 입력하면 자동으로 계정이 만들어집니다.</p>
@@ -27,6 +28,53 @@
       </div>
       <div class="admin-link">
         <a href="/admin.html">관리자 페이지</a>
+      </div>
+    </div>
+
+    <!-- 게임 선택 화면 -->
+    <div id="gameSelectionScreen" class="game-selection-container" style="display: none;">
+      <div class="game-selection-header">
+        <h1>🎰 게임 선택</h1>
+        <div class="player-info-small">
+          <span id="selectedPlayerName"></span> 
+          <button onclick="changePlayer()" class="btn-logout">계정 변경</button>
+          <a href="/admin.html" class="btn-admin">관리자</a>
+        </div>
+      </div>
+      
+      <div class="game-selection-grid">
+        <!-- 블랙잭 -->
+        <div class="game-card" onclick="selectGame('blackjack')">
+          <div class="game-icon">♠️♥️</div>
+          <h2>블랙잭</h2>
+          <p>딜러와의 21점 경쟁!</p>
+          <div class="game-stats">
+            <span>Hit, Stand, Double</span>
+          </div>
+          <button class="btn-play">플레이</button>
+        </div>
+
+        <!-- 바카라 -->
+        <div class="game-card" onclick="selectGame('baccarat')">
+          <div class="game-icon">♦️♣️</div>
+          <h2>바카라</h2>
+          <p>플레이어/뱅커에 베팅하세요!</p>
+          <div class="game-stats">
+            <span>Player, Banker, Tie</span>
+          </div>
+          <button class="btn-play">플레이</button>
+        </div>
+      </div>
+
+      <div class="account-info">
+        <div class="info-item">
+          <span>칩:</span>
+          <strong id="gameSelectionChips">0</strong>
+        </div>
+        <div class="info-item">
+          <span>잔액:</span>
+          <strong id="gameSelectionBalance">$0.00</strong>
+        </div>
       </div>
     </div>
   </div>
@@ -89,12 +137,34 @@
         localStorage.setItem('playerName', name);
         localStorage.setItem('playerData', JSON.stringify(data.player));
 
-        // 게임 페이지로 이동
-        window.location.href = '/game.html';
+        // 게임 선택 화면으로 이동
+        showGameSelection(data.player);
       } catch (error) {
         console.error('게임 시작 오류:', error);
         errorDiv.textContent = '서버 오류가 발생했습니다';
       }
+    }
+
+    function showGameSelection(playerData) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('gameSelectionScreen').style.display = 'block';
+      
+      document.getElementById('selectedPlayerName').textContent = playerData.name;
+      document.getElementById('gameSelectionChips').textContent = playerData.chips;
+      document.getElementById('gameSelectionBalance').textContent = `$${(playerData.balance / 100).toFixed(2)}`;
+    }
+
+    function selectGame(game) {
+      if (game === 'blackjack') {
+        window.location.href = '/game.html';
+      } else if (game === 'baccarat') {
+        window.location.href = '/baccarat.html';
+      }
+    }
+
+    function changePlayer() {
+      localStorage.removeItem('playerData');
+      location.reload();
     }
   </script>
 </body>
